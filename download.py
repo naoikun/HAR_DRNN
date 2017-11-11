@@ -8,6 +8,7 @@ import zipfile
 import os
 import shutil
 import urllib
+import urllib.request
 
 def unzip(filename, path='.'):
     with zipfile.ZipFile(filename, 'r') as zip_file:
@@ -16,7 +17,7 @@ def unzip(filename, path='.'):
 if __name__ == "__main__":
     fd = os.path.abspath(os.path.dirname(__file__))
     url = "http://bit.ly/i0ivEz"
-    urllib.urlretrieve(url,"{}/downloaded".format(fd))
+    urllib.request.urlretrieve(url,"{}/downloaded".format(fd))
     unzip("{}/downloaded".format(fd),fd)
     shutil.copytree("{}/HascToolDataPrj/SampleData/0_sequence".format(fd), "{}/HascToolDataPrj/SampleData_sequence".format(fd))
     shutil.rmtree("{}/HascToolDataPrj/SampleData/0_sequence".format(fd))

@@ -24,6 +24,7 @@ import mkd
 import random
 import datetime
 import os
+import pandas as pd
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--initmodel', '-m', default='',
@@ -66,6 +67,9 @@ os.mkdir("result/{}/model".format(dayname))
 
 # Prepare dataset
 x_train, x_test, t_train, t_test= mkd.mkf(args.cross_n)
+print(x_train)
+df2 = pd.DataFrame(x_train)
+df2.to_csv("x_train.csv")
 
 jamp = len(x_train)/batchsize
 if  not len(x_train)%batchsize == 0:

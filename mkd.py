@@ -38,6 +38,15 @@ def mkf(test_num):
             for k,l in enumerate(ffff):
                 for e in l:
                     data = np.loadtxt("./HascToolDataPrj/SampleData_non_sequence/{0}/{1}/{2}".format(i,v,e),delimiter=",",dtype=np.float32)
+
+
+
+
+                    # print(i + v+e)
+
+
+
+
                     data = np.delete(data,np.s_[::4], 1)
                     hako_x[t][k].append(data)
 
@@ -62,6 +71,7 @@ def mkf(test_num):
 
     #シャッフル
     ran_tr = range(len(train_list))
+    print(train_list)
     ran_te = range(len(test_list))
 
     random.shuffle(ran_tr)

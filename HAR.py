@@ -70,13 +70,13 @@ x_train, x_test, t_train, t_test= mkd.mkf(args.cross_n)
 
 
 dir = '/home/gakusei/PycharmProjects/HAR_DRNN/kinect/non_sequence/*.csv'
-x_train = {}
+x_train =[]
 #print(glob.glob(dir))
 for file_path in glob.glob(dir):
     file_name = os.path.basename(file_path)
-    #print(file_name)
-    x_train[file_name] = pd.read_csv(file_path,header=None).iloc[1:,2:5]
-#print (book_dict)
+    print(file_name)
+    x_train.append(np.loadtxt(file_path,delimiter=',',skiprows=1,usecols=(2,3,4)))
+print (x_train)
 #x_test = x_train
 t_train=[0,1,2]
 #t_test = t_train

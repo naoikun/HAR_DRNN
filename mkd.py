@@ -9,6 +9,7 @@ import os
 import fnmatch
 import numpy as np
 import random
+import time
 from operator import add
 
 def split_seq(seq, s_size):
@@ -71,7 +72,6 @@ def mkf(test_num):
 
     #シャッフル
     ran_tr = range(len(train_list))
-    print(train_list)
     ran_te = range(len(test_list))
 
     random.shuffle(ran_tr)

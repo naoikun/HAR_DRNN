@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 import mkd
 import random
 import datetime
-import os
+import os, glob
 import pandas as pd
 
 parser = argparse.ArgumentParser()
@@ -67,9 +67,22 @@ os.mkdir("result/{}/model".format(dayname))
 
 # Prepare dataset
 x_train, x_test, t_train, t_test= mkd.mkf(args.cross_n)
-print(x_train)
-df2 = pd.DataFrame(x_train)
-df2.to_csv("x_train.csv")
+
+
+dir = '/home/gakusei/PycharmProjects/HAR_DRNN/kinect/non_sequence/*.csv'
+x_train = {}
+#print(glob.glob(dir))
+for file_path in glob.glob(dir):
+    file_name = os.path.basename(file_path)
+    #print(file_name)
+    x_train[file_name] = pd.read_csv(file_path,header=None).iloc[1:,2:5]
+#print (book_dict)
+#x_test = x_train
+t_train=[0,1,2]
+#t_test = t_train
+
+
+print (t_train)
 
 jamp = len(x_train)/batchsize
 if  not len(x_train)%batchsize == 0:

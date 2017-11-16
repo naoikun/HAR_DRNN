@@ -69,17 +69,17 @@ os.mkdir("result/{}/model".format(dayname))
 x_train, x_test, t_train, t_test= mkd.mkf(args.cross_n)
 
 
-dir = '/home/gakusei/PycharmProjects/HAR_DRNN/kinect/non_sequence/*.csv'
+dir = '/home/gakusei/PycharmProjects/HAR_DRNN/kinect/non_sequence/A_coat_right/*.csv'
 x_train =[]
 #print(glob.glob(dir))
 for file_path in glob.glob(dir):
     file_name = os.path.basename(file_path)
     print(file_name)
-    x_train.append(np.loadtxt(file_path,delimiter=',',skiprows=1,usecols=(2,3,4)))
+    x_train.append(np.loadtxt(file_path,delimiter=',',skiprows=1,usecols=(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22))) #usecols 0 start
 print (x_train)
-#x_test = x_train
-t_train=[0,1,2]
-#t_test = t_train
+x_test = x_train
+t_train=[0,1,2,0,1,2,0,1,2,0,1,2,0,1,2,0,1]
+t_test = t_train
 
 
 print (t_train)
@@ -88,7 +88,7 @@ jamp = len(x_train)/batchsize
 if  not len(x_train)%batchsize == 0:
     jamp = len(x_train)//batchsize + 1#１エポックあたりこの回数回るよ（トレインデータを全部舐めまわすイメージ）
 
-net = network.DRNN(3, n_units, 6)
+net = network.DRNN(21, n_units, 6)
 model = L.Classifier(net)
 model.compute_accuracy = True
 for param in model.params():

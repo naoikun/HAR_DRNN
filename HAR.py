@@ -33,7 +33,7 @@ parser.add_argument('--resume', '-r', default='',
                     help='Resume the optimization from snapshot')
 parser.add_argument('--gpu', '-g', default=-1, type=int,
                     help='GPU ID (negative value indicates CPU)')
-parser.add_argument('--n_epoch', '-e', default=100, type=int,
+parser.add_argument('--n_epoch', '-e', default=1000, type=int,
                     help='max_epoch')
 parser.add_argument('--n_units', '-u', default=60, type=int,
                     help='n_units')
@@ -47,7 +47,7 @@ parser.add_argument('--cross_n', '-cn', default=4, type=int,
                     help='Cross-validation No.')
 parser.add_argument('--gr_cli', '-gc', default=5, type=int,
                     help='grad_clip')
-parser.add_argument('--drop_rate', '-dr', default=0.4, type=float,
+parser.add_argument('--drop_rate', '-dr', default=0.5, type=float,
                     help='drop out tate')
 args = parser.parse_args()
 xp = cuda.cupy if args.gpu >= 0 else np

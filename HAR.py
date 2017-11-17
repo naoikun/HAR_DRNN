@@ -41,13 +41,13 @@ parser.add_argument('--batch', '-b', default=20, type=int,
                     help='batchsize')
 parser.add_argument('--b_len', '-bl', default=30, type=int,
                     help='bprop_len')
-parser.add_argument('--s_len', '-s', default=1200, type=int,
+parser.add_argument('--s_len', '-s', default=70, type=int,
                     help='signal_len')
 parser.add_argument('--cross_n', '-cn', default=4, type=int,
                     help='Cross-validation No.')
 parser.add_argument('--gr_cli', '-gc', default=5, type=int,
                     help='grad_clip')
-parser.add_argument('--drop_rate', '-dr', default=0.5, type=float,
+parser.add_argument('--drop_rate', '-dr', default=0.4, type=float,
                     help='drop out tate')
 args = parser.parse_args()
 xp = cuda.cupy if args.gpu >= 0 else np
@@ -66,29 +66,47 @@ os.makedirs("result/{}".format(dayname))
 os.mkdir("result/{}/model".format(dayname))
 
 # Prepare dataset
-x_train, x_test, t_train, t_test= mkd.mkf(args.cross_n)
-
-
 dir = '/home/gakusei/PycharmProjects/HAR_DRNN/kinect/non_sequence/*.csv'
 x_train =[]
-#print(glob.glob(dir))
-for file_path in glob.glob(dir):
+t_train = []
+file_list = sorted(glob.glob(dir))
+print(file_list)
+for file_path in file_list:
     file_name = os.path.basename(file_path)
-    print(file_name)
-    x_train.append(np.loadtxt(file_path,delimiter=',',skiprows=1,usecols=(2,3,4)))
-print (x_train)
+    x_train.append(np.loadtxt(file_path,delimiter=',',skiprows=1,usecols=(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22)))
+
 #x_test = x_train
-t_train=[0,1,2]
-#t_test = t_train
+traindata=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]
+x_feature = x_train
+#t_test = traindata
+t_test = []
+t_train = []
+x_test = []
+x_train = []
 
 
-print (t_train)
+## TestData
+t_test.extend(traindata[0:2])
+t_test.extend(traindata[17:19])
+t_test.extend(traindata[43:45]) #A,B,C kara 3tu
+x_test.extend(x_feature[0:2])
+x_test.extend(x_feature[17:19])
+x_test.extend(x_feature[43:45]) #onajiku
+
+## TraingData
+t_train.extend(traindata[3:16])
+t_train.extend(traindata[20:42])
+t_train.extend(traindata[46:63])
+x_train.extend(x_feature[3:16])
+x_train.extend(x_feature[20:42])
+x_train.extend(x_feature[46:63])
+print (x_train[1])
 
 jamp = len(x_train)/batchsize
 if  not len(x_train)%batchsize == 0:
     jamp = len(x_train)//batchsize + 1#１エポックあたりこの回数回るよ（トレインデータを全部舐めまわすイメージ）
 
-net = network.DRNN(3, n_units, 6)
+net = network.DRNN(21, n_units, 6)
 model = L.Classifier(net)
 model.compute_accuracy = True
 for param in model.params():
@@ -230,6 +248,7 @@ for n in range(n_epoch):
         x = chainer.Variable(xp.asarray(test, dtype=np.float32))
         t = chainer.Variable(xp.asarray(t_test,dtype=np.int32))
 
+        loss_i_e = model2(x, t)
         loss_i_e = model2(x, t)
         acu_e += float(model2.accuracy.data)
         t_loss_e += float(loss_i_e.data)

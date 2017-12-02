@@ -13,6 +13,8 @@ import numpy as np
 
 import chainer
 from chainer import cuda
+import cupy
+import cupy.cudnn
 import chainer.links as L
 from chainer import optimizers
 from chainer import serializers
@@ -33,7 +35,7 @@ parser.add_argument('--resume', '-r', default='',
                     help='Resume the optimization from snapshot')
 parser.add_argument('--gpu', '-g', default=-1, type=int,
                     help='GPU ID (negative value indicates CPU)')
-parser.add_argument('--n_epoch', '-e', default=1000, type=int,
+parser.add_argument('--n_epoch', '-e', default=100, type=int,
                     help='max_epoch')
 parser.add_argument('--n_units', '-u', default=60, type=int,
                     help='n_units')
